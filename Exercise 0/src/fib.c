@@ -4,12 +4,16 @@
 #include <stdint.h>
 
 int fib(int a) {
-	/* TODO: implementation */
+    if (a == 0 || a == 1)
+        return a;
+
+    return fib(a - 1) + fib(a - 2);
 }
 
 int main(void)
 {
-	/* TODO: implementation */
+
+    printf("fib(10) = %u\n", fib(10));
 
 	return 0;
 }
