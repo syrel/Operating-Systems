@@ -1,2 +1,5 @@
 .idea/
 **/cmake-build-debug/
+
+# Do no commit binaries
+*.o
