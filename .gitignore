@@ -1,5 +1,16 @@
+# IDE stuff
 .idea/
-**/cmake-build-debug/
 
 # Do no commit binaries
 *.o
+
+# Ignore binaries
+bin/
+
+# Cmake artifacts
+**/cmake-build-debug/
+**/cmake_install.cmake
+**/CMakeCache.txt
+**/CMakeFiles/
+**/Makefile
+**/_*
