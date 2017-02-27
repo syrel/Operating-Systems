@@ -8,8 +8,10 @@ int main(void) {
     uint8_t sub[] = {255, 255, 240, 0};
     uint8_t net[4];
 
+    // first we compute the length of an array of address and subnet mask
     size_t length = sizeof(net) / sizeof(net[0]);
     for (size_t i = 0; i < length; i++) {
+        // bitwise AND of address and subnet mask
         net[i] = add[i] & sub[i];
     }
 
