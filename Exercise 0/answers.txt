@@ -1,0 +1,28 @@
+2.3 Weshalb wurden als Typ für die Argumente off_t und size_t anstatt zum Beispiel int gewählt?
+
+size_t is used to represent the sizes of objects[1] and us guaranteed to express the maximum size of any object.
+off_t represents a signed offset within object's size[2]. Note, that it is defined in POSIX.
+There is no guarantee that the size (or an offset) of an object will fit in 'int' type. Usage of int to represent an object's size may lead to undefined behaviour (e.g. wrong return values) and security issues as the result of int overflow.
+
+[1] https://www.gnu.org/software/libc/manual/html_node/Important-Data-Types.html
+[2] https://www.gnu.org/software/libc/manual/html_node/File-Position-Primitive.html
+
+2.6 Was erwarten Sie für eine Ausgabe? Überlegen Sie sich, wie das Resultat zu stande kommt.
+
+Output is expected to be 4 and 8 multiplied by 2, according to f(a) function. However it is not the case. The problem is how and where temporary (local) variables are located: on the stack. After method return allocated memory on the stack is not valid anymore and may be rewriten, that is why returning an address of a variable on the stack results in undefined behaviour. Instead we should allocate a dynamic memory on the heap for a single integer using malloc(sizeof(int)). This way returning an address is a valid operation.
+Nevertheless a better approach would be to pass a pointer instead. A good practice is to make caller be responsible for memory allocation and its freeing while callee should only work with already allocated memory. Ideally, malloc() and free() should be in the same context.
+
+The following implementation may be the best approach:
+
+void f(int a, int* b) {
+    *b = 2 * a;
+}
+
+int main(void) {
+    int p4, p8;
+
+    f(4, &p4);
+    f(8, &p8);
+
+    printf("p4: %i / p8: %i\n", p4, p8);
+}
