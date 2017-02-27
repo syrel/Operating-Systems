@@ -10,9 +10,12 @@ int main(void) {
 
     // first we compute the length of an array of address and subnet mask
     size_t length = sizeof(net) / sizeof(net[0]);
-    for (size_t i = 0; i < length; i++) {
-        // bitwise AND of address and subnet mask
-        net[i] = add[i] & sub[i];
+    {
+        size_t i;
+        for (i = 0; i < length; i++) {
+            // bitwise AND of address and subnet mask
+            net[i] = add[i] & sub[i];
+        }
     }
 
     printf("net address: %u.%u.%u.%u\n", net[0], net[1], net[2], net[3]);

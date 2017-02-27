@@ -17,11 +17,12 @@
  *  ERROR_NOT_INTEGER if a given character does not represent a number
  */
 result to_number(char ch, uint8_t *retNumber) {
+    int number;
     if (ch < '0' || ch > '9') {
         return ERROR_NOT_INTEGER;
     }
 
-    int number = ch - '0';
+    number = ch - '0';
     // we must make sure before conversion that UINT_8 is not overflowed
     if (number < 0 || number > UINT8_MAX) {
         return ERROR_NOT_INTEGER;
@@ -41,6 +42,7 @@ result to_number(char ch, uint8_t *retNumber) {
  *      ERROR_NOT_INTEGER if an argument at an index is not a valid number
  */
 result number_at(char *arguments[], size_t index, uint8_t *retArg) {
+    char ch;
     // make sure that argument is just a single character
     if (!arguments[index + 1][0]) {
         return ERROR_NOT_INTEGER;
@@ -50,7 +52,8 @@ result number_at(char *arguments[], size_t index, uint8_t *retArg) {
         return ERROR_NOT_INTEGER;
     }
 
-    char ch = arguments[index + 1][0];
+
+    ch = arguments[index + 1][0];
     return to_number(ch, retArg);
 }
 
@@ -66,18 +69,22 @@ result number_at(char *arguments[], size_t index, uint8_t *retArg) {
   *     ERROR_OUT_OF_BOUNDS if less arguments were passed than expected
  */
 result numbers(int argc, char *arguments[], size_t amount, uint8_t *retNumbers) {
+    result rv;
     // make sure that we are within arguments bounds
-    if (argc != amount + 1) {
+    if ((size_t)argc != amount + 1) {
         return ERROR_OUT_OF_BOUNDS;
     }
 
-    result rv;
-    for (size_t index = 0; index < amount; index++) {
-        rv = number_at(arguments, index, &retNumbers[index]);
-        if (FAILED(rv)) {
-            return rv;
+    {
+        size_t index;
+        for (index = 0; index < amount; index++) {
+            rv = number_at(arguments, index, &retNumbers[index]);
+            if (FAILED(rv)) {
+                return rv;
+            }
         }
     }
+
     return RESULT_OK;
 }
 
@@ -88,25 +95,34 @@ result numbers(int argc, char *arguments[], size_t amount, uint8_t *retNumbers) 
  * @return return of multiplication
  */
 uint8_t multiply(uint8_t *numbers, size_t amount) {
-    uint8_t mult = 1;
-    for (size_t index = 0; index < amount; index++) {
-        mult *= numbers[index];
+    uint8_t mult;
+    mult = 1;
+    {
+        size_t index;
+        for (index = 0; index < amount; index++) {
+            mult *= numbers[index];
+        }
     }
+
     return mult;
 }
 
 int main(int argc, char *argv[]) {
-    uint8_t *arguments = malloc(EXPECTED_ARGUMENTS * sizeof(uint8_t));
+    uint8_t *arguments;
+    uint8_t mult;
+    result rv;
+
+    arguments = malloc(EXPECTED_ARGUMENTS * sizeof(uint8_t));
 
     // first we want to convert string arguments to a collection of numbers to multiply
-    result rv = numbers(argc, argv, EXPECTED_ARGUMENTS, arguments);
+    rv = numbers(argc, argv, EXPECTED_ARGUMENTS, arguments);
     if (FAILED(rv)) {
         fprintf(stderr, "Error(%u): Check arguments\n", rv);
         exit(EXIT_FAILURE);
     }
 
     // next we multiply then
-    uint8_t mult = multiply(arguments, EXPECTED_ARGUMENTS);
+    mult = multiply(arguments, EXPECTED_ARGUMENTS);
 
     // print
     printf("%u * %u = %u\n", arguments[0], arguments[1], mult);
