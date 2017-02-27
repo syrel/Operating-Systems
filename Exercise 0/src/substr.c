@@ -27,7 +27,7 @@ static char *substring(const char *str, off_t pos, size_t len) {
 }
 
 int main(int argc, char **argv) {
-    char *foo = "Nicht\n";
+    const char *foo = "Nicht\n";
     char *bar = substring(foo, 2, 3);
     printf("%s\n", bar);
     free(bar);
