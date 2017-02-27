@@ -5,14 +5,13 @@
 #include <stdlib.h>
 
 struct elem {
-	int pos;
-	struct elem *next;
+    int pos;
+    struct elem *next;
 };
 
-static void panic(const char *serror)
-{
-	printf("%s", serror);
-	exit(1);
+static void panic(const char *serror) {
+    printf("%s", serror);
+    exit(1);
 }
 
 /**
@@ -20,35 +19,32 @@ static void panic(const char *serror)
  * @param size
  * @return
  */
-static void *xmalloc(size_t size)
-{
-	void *ptr;
-	if (size == 0)
-		panic("Size is 0!\n");
-	ptr = malloc(size);
-	if (!ptr)
-		panic("No mem left!\n");
-	return ptr;
+static void *xmalloc(size_t size) {
+    void *ptr;
+    if (size == 0)
+        panic("Size is 0!\n");
+    ptr = malloc(size);
+    if (!ptr)
+        panic("No mem left!\n");
+    return ptr;
 }
 
-static void xfree(void *ptr)
-{
-	if (ptr == NULL)
-		panic("Got Null-Pointer!\n");
-	free(ptr);
+static void xfree(void *ptr) {
+    if (ptr == NULL)
+        panic("Got Null-Pointer!\n");
+    free(ptr);
 }
 
-static struct elem *init_list(size_t len)
-{
-	struct elem* head = xmalloc(sizeof(struct elem));
+static struct elem *init_list(size_t len) {
+    struct elem *head = xmalloc(sizeof(struct elem));
     head->pos = 0;
     head->next = head;
 
-    struct elem* previous = head;
+    struct elem *previous = head;
 
     // we already created a head element in a linked list, start iteration from 1
     for (size_t index = 1; index < len; index++) {
-        struct elem* next = xmalloc(sizeof(struct elem));
+        struct elem *next = xmalloc(sizeof(struct elem));
         next->next = head;
         next->pos = (previous->pos) + 1;
 
@@ -58,8 +54,7 @@ static struct elem *init_list(size_t len)
     return head;
 }
 
-static void clean_list(struct elem *head, size_t len)
-{
+static void clean_list(struct elem *head, size_t len) {
     // end of recursion
     if (len == 0) {
         return;
@@ -71,8 +66,7 @@ static void clean_list(struct elem *head, size_t len)
     xfree(current);
 }
 
-static void traverse_list(struct elem *head, int times)
-{
+static void traverse_list(struct elem *head, int times) {
     for (int iteration = 0; iteration < times; iteration++) {
         struct elem *current = head;
 
@@ -84,15 +78,14 @@ static void traverse_list(struct elem *head, int times)
     }
 }
 
-int main(void)
-{
-	struct elem *head = NULL;
-	size_t len = 10;
+int main(void) {
+    struct elem *head = NULL;
+    size_t len = 10;
 
     head = init_list(len);
     traverse_list(head, 2);
     clean_list(head, len);
 
-	return 0;
+    return 0;
 }
 

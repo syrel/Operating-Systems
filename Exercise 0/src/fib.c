@@ -10,10 +10,9 @@ int fib(int a) {
     return fib(a - 1) + fib(a - 2);
 }
 
-int main(void)
-{
+int main(void) {
 
     printf("fib(10) = %u\n", fib(10));
 
-	return 0;
+    return 0;
 }
