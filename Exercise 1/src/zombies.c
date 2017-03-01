@@ -5,15 +5,31 @@
 #include <unistd.h>
 #include <pthread.h>
 
-void create_zombie() {
-	/* TODO: Implement child process and kill it */
-	return;
+pid_t create_zombie() {
+	pid_t pid;
+    pid = fork();
+    if (pid < 0) {
+        printf("Failed to create a process\n");
+        exit(1);
+    }
+
+    // in child process pid is 0
+    if (pid == 0) {
+        printf("Exit child\n");
+        exit(0); // instantly finish it
+    }
+
+    return pid;
 }
 
 int main(void)
 {
-	int wait = 15;
-	/* TODO: implement */
+	unsigned int wait = 15;
+    pid_t pid;
+
+    pid = create_zombie();
+    printf("waiting on %d\n", pid);
+    sleep(wait);
 
 	return 0;
 }
