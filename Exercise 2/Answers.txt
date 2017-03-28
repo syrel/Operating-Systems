@@ -1,0 +1,5 @@
+a) `available_resources` is influenced by Race Condition, since it is read and written from multiple parallel threads. There might happen when two threads read `available_resources` and one of the threads managed to save it first, which leads to the fact that the second thread works with outdated value.
+
+b) In decrease_count line 22 (if condition) and line 25 (read, change, write) while in increase_count it is also an if check (line 34) and line 27 (read, change, write).
+
+The main problem that leads to classical Race Condition is a sequance of (read, change, write) performed from multiple threads on the save shared resource.
