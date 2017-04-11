@@ -5,7 +5,7 @@
 #include <math.h>
 
 /*
- * System used: maxOSX Sierra 10.12.4 (16E195)
+ * System used: macOSX Sierra 10.12.4 (16E195) Darwin 16.5.0
  */
 
 /**
