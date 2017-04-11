@@ -19,6 +19,9 @@
  * @return page number
  */
 int calculate_page (uint32_t address) {
+    // page number can be found by dividing an address by a page size
+    // and discarding a fractional part (floor rounding) which
+    // is a default behaviour of "/" operator in C
 	return address / PAGE_SIZE;
 }
 
